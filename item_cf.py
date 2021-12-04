@@ -31,11 +31,21 @@ class ItemCollaborativeFiltering:
 
                     if i not in weights:
                         weights[i] = {}
-                    weights[i][j] = 1 if j not in weights[i] else weights[i][j] + 1
+                    # reduce influence from frequent users
+                    weights[i][j] = 1.0 / math.log(1.0 + len(like_list)) \
+                        if j not in weights[i] else weights[i][j] + 1.0 / math.log(1.0 + len(like_list))
 
         for i, j_list in weights.items():
             for j, wij in weights[i].items():
                 weights[i][j] = wij / math.sqrt(like_cnt[i] * like_cnt[j])
+
+        # normalize weights to promote recommendation accuracy
+        for i, j_list in weights.items():
+            max_val = 0.0
+            for j, wij in weights[i].items():
+                max_val = max(max_val, wij)
+            for j, wij in weights[i].items():
+                weights[i][j] /= max_val
 
         self.weights = weights
 

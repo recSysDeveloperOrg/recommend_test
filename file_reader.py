@@ -1,8 +1,8 @@
 import csv
 
 
-def csv_read(filename, max_line=None):
-    with open(filename, mode='r') as f:
+def csv_read(filename, max_line=None, encoding='utf8'):
+    with open(filename, mode='r', encoding=encoding) as f:
         csv_reader, content, counter = csv.reader(f), [], 0
         for line in csv_reader:
             content.append(line)
