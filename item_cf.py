@@ -49,7 +49,7 @@ class ItemCollaborativeFiltering:
 
         self.weights = weights
 
-    # predict_interest: predict interest possibilities for user_id2
+    # predict_interest: predict interest possibilities for user_id
     def predict_interest(self, user_id):
         user_item_list, weights, k = self.user_item_list, self.weights, self.k
         item_to_rating, item_to_possibility = {}, {}

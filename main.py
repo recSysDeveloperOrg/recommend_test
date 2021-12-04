@@ -28,7 +28,8 @@ if __name__ == '__main__':
     weights = item_cf.item_similarity()
     max_rec_user_id = 1
     while True:
-        if len(item_cf.predict_interest("{}".format(max_rec_user_id))) == 0:
+        if len(item_cf.predict_interest(f'{max_rec_user_id}')) == 0:
+            max_rec_user_id -= 1
             break
         max_rec_user_id += 1
-    print(f'max recommend user id is {max_rec_user_id - 1}')
+    print(f'max recommend user id is {max_rec_user_id}')
