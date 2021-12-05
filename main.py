@@ -61,7 +61,12 @@ if __name__ == '__main__':
     ratings_file = 'ml-latest/ratings.csv'
     tag_file = 'ml-latest/tags.csv'
 
-    # item_cf_predict()
-    rec_res = recommend_movie_by_tag(user_id='56')
-    for movie_title, movie_data in rec_res.items():
-        print(f'{movie_title}: {movie_data}')
+    # # item_cf_predict()
+    # rec_res = recommend_movie_by_tag(user_id='56')
+    # for movie_title, movie_data in rec_res.items():
+    #     print(f'{movie_title}: {movie_data}')
+
+    rating_content = csv_read(ratings_file, max_line=10000)
+    train_cf = ItemCollaborativeFiltering(rating_content, k=8)
+    recall, precision = train_cf.train_model(rating_threshold=2.5)
+    print(f'recall:{recall}; precision:{precision}')
