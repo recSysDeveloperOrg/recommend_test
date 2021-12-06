@@ -33,6 +33,7 @@ message QueryRateRecordsReq {
 message QueryRateRecordsResp {
     BaseResp baseResp
     repeated RateRecord records
+    i64 nRecords
 }
 
 message QueryMovieRatingReq {
@@ -53,7 +54,7 @@ service RatingService {
 ## 功能说明
 1. 电影详情页面需要展示该电影的平均得分&用户给该电影的打分（RatingService.batchQueryMovieRating）
 2. 用户可以在电影详情页面给这个电影打分（RatingService.rateMovie）
-3. 用户可以在个人详情页面查看历史评分记录（RatingService.queryRateRecords）
+3. 用户可以在个人详情页面查看历史评分记录（可以考虑和历史tag记录放在一起）（RatingService.queryRateRecords）
 
 ## 错误码约定（xxxResp.baseResp.errNo）
 RateResp:

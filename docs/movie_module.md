@@ -24,7 +24,7 @@ message RecommendReq {
 message RecommendResp {
     BaseResp baseResp
     repeated Movie movies
-    i64 totalResCnt // 系统总的推荐数量, 用于判定是否有下一页
+    i64 nRecommend // 系统总的推荐数量, 用于判定是否有下一页
 }
 
 message MovieDetailReq {
@@ -43,7 +43,7 @@ message SearchReq {
 message SearchResp {
     BaseResp baseResp
     repeated Movie movies
-    i64 totalResCnt // 搜索结果总数, 用于判定是否有下一页
+    i64 nSearch // 搜索结果总数, 用于判定是否有下一页
 }
 
 message CreateReq {
