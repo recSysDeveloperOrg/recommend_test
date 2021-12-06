@@ -132,13 +132,12 @@ message RecommendResult {
 }
 
 service Recommender {
-    rpc recommendByRating(i64 userId) returns (RecommendResult) {}
-    rpc recommendByTag(i64 userId) returns (RecommendResult) {}
+    rpc recommend(i64 userId) returns (RecommendResult) {}
 } 
 ```
 
 整体设计图：
-![algorithm_module](https://www.ljygogogo.com/upload/2021/12/algorithm_module-d5a31d1f1ed94cd2aa4ae93616cb49fb.png)
+![algorithm_module](https://www.ljygogogo.com/upload/2021/12/algorithm_module-b736fda55bda40d4a4947d84d6672ce6.png)
 
 ### 后台系统设计
 
@@ -156,8 +155,6 @@ service Recommender {
 
 #### 新用户冷启动模块
 ![new_user_cold_start](https://www.ljygogogo.com/upload/2021/12/new_user_cold_start-2235c563a4f94f358bd73d87c43abbdf.png)
-
-由于这里需要计算所有电影的推荐概率，所以可以考虑上spark算
 
 #### 日志模块
 
