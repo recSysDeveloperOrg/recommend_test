@@ -63,3 +63,32 @@ class TagBasedRecommend:
             res[item_id] = interest
 
         return res
+
+    def train_model(self, user_item_list, rating_threshold=3):
+        user_to_item_set = {}
+        user_set = set()
+        for user_item in user_item_list:
+            user, item, rating = user_item[0], user_item[1], float(user_item[2])
+            user_set.add(user)
+            if user not in user_to_item_set:
+                user_to_item_set[user] = set()
+            if rating < rating_threshold:
+                continue
+            user_to_item_set[user].add(item)
+
+        share, precision, recall = 0, 0, 0
+        for user_id in user_set:
+            if user_id not in self.user_to_tags:
+                continue
+
+            item_to_interest = self.predict_top_k(user_id)
+            item_set = set()
+            for item_id, _ in item_to_interest.items():
+                item_set.add(item_id)
+
+            share += len(item_set & user_to_item_set[user_id])
+            precision += len(item_set)
+            recall += len(user_to_item_set[user_id])
+
+        print(f'total share:{share}; recall:{recall}; pre:{precision}')
+        return share * 1.0 / precision, share * 1.0 / recall

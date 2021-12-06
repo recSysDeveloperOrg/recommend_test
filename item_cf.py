@@ -71,10 +71,7 @@ class ItemCollaborativeFiltering:
                 item_to_possibility[j] = wij * rating if j not in item_to_possibility \
                     else item_to_possibility[j] + wij * rating
 
-        res = {}
-        for item_id, p in sorted(item_to_possibility.items(), key=lambda x: x[1], reverse=True)[0:k]:
-            res[item_id] = p
-        return res
+        return item_to_possibility
 
     # train_model is used only to measure the recall and precision of the model
     # and should never be called in production env
@@ -82,7 +79,7 @@ class ItemCollaborativeFiltering:
         train_data, test_data = self.split_data()
         item_cf_model = ItemCollaborativeFiltering(train_data, k=10)
         item_cf_model.item_similarity()
-        # {user_id: [items with ratings >= 2.5]}
+        # {user_id: [items with ratings >= rating_threshold]}
         users, user_to_items = set(), {}
         for data in test_data:
             user, item, rating = data[0], data[1], float(data[2])
