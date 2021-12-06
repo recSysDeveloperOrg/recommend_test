@@ -55,6 +55,7 @@ class TagBasedRecommend:
 
     def predict_top_k(self, user_id, k=10):
         item_to_interest = {}
+        # you can optimize here with multi-thread
         for item_id in self.item_id_set:
             item_to_interest[item_id] = self.predict_interest(user_id, item_id)
 
