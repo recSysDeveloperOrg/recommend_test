@@ -3,61 +3,61 @@
 
 ```
 message BaseResp {
-    i64 errNo
-    string errMsg
+    int64 err_no = 1;
+    string err_msg = 2;
 }
 // 这里后面可以考虑加上推荐的原因
 message Movie {
-    string id
-    string title
-    string picUrl
-    optional string introduction
-    optional string participants
-    optional string releaseDate
-    optional string language
+    string id = 1;
+    string title = 2;
+    string pic_url = 3;
+    optional string introduction = 4;
+    optional string participants = 5;
+    optional string release_date = 6;
+    optional string language = 7;
 }
 
 message RecommendReq {
-    i64 page
-    i64 offset    
+    int64 page = 1;
+    int64 offset = 2;
 }
 message RecommendResp {
-    BaseResp baseResp
-    repeated Movie movies
-    i64 nRecommend // 系统总的推荐数量, 用于判定是否有下一页
+    BaseResp base_resp = 1;
+    repeated Movie movies = 2;
+    int64 n_recommend = 3; // 系统总的推荐数量, 用于判定是否有下一页
 }
 
 message MovieDetailReq {
-    string id
+    string id = 1;
 }
 message MovieDetailResp {
-    BaseResp baseResp
-    Movie movie
+    BaseResp base_resp = 1;
+    Movie movie = 2;
 }
 
 message SearchReq {
-    string keyword
-    i64 page
-    i64 offset
+    string keyword = 1;
+    int64 page = 2;
+    int64 offset = 3;
 }
 message SearchResp {
-    BaseResp baseResp
-    repeated Movie movies
-    i64 nSearch // 搜索结果总数, 用于判定是否有下一页
+    BaseResp base_resp = 1;
+    repeated Movie movies = 2;
+    int64 n_search = 3; // 搜索结果总数, 用于判定是否有下一页
 }
 
 message CreateReq {
-    Movie movie
+    Movie movie = 1;
 }
 message CreateResp {
-    BaseResp baseResp
+    BaseResp base_resp = 1;
 }
 
 service MovieService {
-    rpc recommendMovies(RecommendReq) returns (RecommendResp) {}
-    rpc getMovieDetail(MovieDetailReq) returns (MovieDetailResp) {}
-    rpc searchMovies(SearchReq) returns (SearchResp) {}
-    rpc createMovie(CreateReq) returns (CreateResp) {}
+    rpc RecommendMovies(RecommendReq) returns (RecommendResp) {}
+    rpc GetMovieDetail(MovieDetailReq) returns (MovieDetailResp) {}
+    rpc SearchMovies(SearchReq) returns (SearchResp) {}
+    rpc CreateMovie(CreateReq) returns (CreateResp) {}
 }
 ```
 
@@ -98,4 +98,19 @@ CreateResp中：
 2,"用户未登录"
 3,"用户没有权限创建新电影条目"
 999,"系统未知错误"
+```
+
+##DB模型
+项目准备使用MongoDB，这是一个文档类型的数据库，跟JSON格式非常类似
+```
+{
+    _id: "xxx",
+    title:"xxx",
+    pic_url:"https://xxx.com",
+    introduction: "xxx",
+    participants: "xxx",
+    release_date: xxx,
+    language: "xxx",
+    ave_rating:x.x  // 电影平均评分，仅在新用户评分时计算
+}
 ```

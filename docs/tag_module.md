@@ -88,3 +88,27 @@ service TagService {
 2,"用户未登录"
 999,"系统未知错误"
 ```
+
+##DB模型
+项目准备使用MongoDB，这是一个文档类型的数据库，跟JSON格式非常类似
+```
+tag:
+{
+    _id:"xxx",
+    content:"xxx",
+    createdAt:xxx   // 表示这个tag被创建的时间
+}
+用户打的tag：
+{
+    userId: "xxx",
+    tagId: "xxx",
+    createdAt: xxx, // 用户第一次使用这个tag的时间
+    useTimes: 666,   // 用户打这个tag的次数
+}
+电影tag：
+{
+    movieId: "xxx",
+    tagId: "xxx",
+    taggedTimes: 666    // 表示这个电影被打这个tag的次数
+}
+```

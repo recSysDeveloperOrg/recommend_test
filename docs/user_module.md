@@ -95,3 +95,20 @@ service UserService {
 2,"传入的token已经过期"
 999,"系统发生未知错误"
 ```
+
+##DB模型
+项目准备使用MongoDB，这是一个文档类型的数据库，跟JSON格式非常类似
+```
+用户模型：
+{
+    _id:"xxx",
+    name: "xxx",
+    password: "xxx",
+    gender: "xxx"
+}
+refresh_token:
+{
+    refreshToken: "xxx",
+    userId:"xxx"
+}
+```

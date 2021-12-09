@@ -78,3 +78,13 @@ QueryMovieRatingResp:
 2,"用户未登录"
 999,"系统未知错误"
 ```
+
+##DB模型
+项目准备使用MongoDB，这是一个文档类型的数据库，跟JSON格式非常类似
+```
+{
+    userId: "xxx",
+    movieId: "xxx",
+    rating: x.x
+}
+```
