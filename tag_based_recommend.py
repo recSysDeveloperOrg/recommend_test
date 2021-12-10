@@ -1,39 +1,44 @@
+import csv
 import math
 
 
 class TagBasedRecommend:
-    def __init__(self, user_tag_list):
+    def __init__(self, tag_list_file):
         user_to_tag_cnt, item_to_tag_cnt = {}, {}
         user_to_tags, item_to_tags = {}, {}
         tag_to_users, item_to_users = {}, {}
         item_id_set = set()
 
-        for user_id, item_id, tag_id, _ in user_tag_list:
-            tag_id = tag_id.lower()
-            if user_id not in user_to_tag_cnt:
-                user_to_tag_cnt[user_id] = {}
-            if item_id not in item_to_tag_cnt:
-                item_to_tag_cnt[item_id] = {}
-            user_to_tag_cnt[user_id][tag_id] = 1 if tag_id not in user_to_tag_cnt[user_id] \
-                else user_to_tag_cnt[user_id][tag_id] + 1
-            item_to_tag_cnt[item_id][tag_id] = 1 if tag_id not in item_to_tag_cnt[item_id] \
-                else item_to_tag_cnt[item_id][tag_id] + 1
+        with open(tag_list_file, encoding='utf8') as f:
+            csv_reader = csv.reader(f)
+            next(csv_reader, None)
 
-            if user_id not in user_to_tags:
-                user_to_tags[user_id] = set()
-            if item_id not in item_to_tags:
-                item_to_tags[item_id] = set()
-            user_to_tags[user_id].add(tag_id)
-            item_to_tags[item_id].add(tag_id)
+            for user_id, item_id, tag_id, _ in csv_reader:
+                tag_id = tag_id.lower()
+                if user_id not in user_to_tag_cnt:
+                    user_to_tag_cnt[user_id] = {}
+                if item_id not in item_to_tag_cnt:
+                    item_to_tag_cnt[item_id] = {}
+                user_to_tag_cnt[user_id][tag_id] = 1 if tag_id not in user_to_tag_cnt[user_id] \
+                    else user_to_tag_cnt[user_id][tag_id] + 1
+                item_to_tag_cnt[item_id][tag_id] = 1 if tag_id not in item_to_tag_cnt[item_id] \
+                    else item_to_tag_cnt[item_id][tag_id] + 1
 
-            if tag_id not in tag_to_users:
-                tag_to_users[tag_id] = set()
-            if item_id not in item_to_users:
-                item_to_users[item_id] = set()
-            tag_to_users[tag_id].add(user_id)
-            item_to_users[item_id].add(user_id)
+                if user_id not in user_to_tags:
+                    user_to_tags[user_id] = set()
+                if item_id not in item_to_tags:
+                    item_to_tags[item_id] = set()
+                user_to_tags[user_id].add(tag_id)
+                item_to_tags[item_id].add(tag_id)
 
-            item_id_set.add(item_id)
+                if tag_id not in tag_to_users:
+                    tag_to_users[tag_id] = set()
+                if item_id not in item_to_users:
+                    item_to_users[item_id] = set()
+                tag_to_users[tag_id].add(user_id)
+                item_to_users[item_id].add(user_id)
+
+                item_id_set.add(item_id)
 
         self.user_to_tag_cnt = user_to_tag_cnt
         self.item_to_tag_cnt = item_to_tag_cnt
@@ -65,17 +70,21 @@ class TagBasedRecommend:
 
         return res
 
-    def train_model(self, user_item_list, rating_threshold=3):
+    def train_model(self, user_item_file, rating_threshold=3):
         user_to_item_set = {}
         user_set = set()
-        for user_item in user_item_list:
-            user, item, rating = user_item[0], user_item[1], float(user_item[2])
-            user_set.add(user)
-            if user not in user_to_item_set:
-                user_to_item_set[user] = set()
-            if rating < rating_threshold:
-                continue
-            user_to_item_set[user].add(item)
+        with open(user_item_file, encoding='utf8') as f:
+            csv_reader = csv.reader(f)
+            next(csv_reader, None)
+
+            for user_item in csv_reader:
+                user, item, rating = user_item[0], user_item[1], float(user_item[2])
+                user_set.add(user)
+                if user not in user_to_item_set:
+                    user_to_item_set[user] = set()
+                if rating < rating_threshold:
+                    continue
+                user_to_item_set[user].add(item)
 
         share, precision, recall = 0, 0, 0
         for user_id in user_set:
