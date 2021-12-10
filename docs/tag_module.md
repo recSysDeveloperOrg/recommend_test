@@ -102,6 +102,7 @@ tag:
 {
     _id:"xxx",
     userId: "xxx",
+    movieId: "xxx",
     tagId: "xxx",
     updatedAt: xxx, // 用户最后一次使用这个Tag的时间
     useTimes: 666,   // 用户打这个tag的次数
