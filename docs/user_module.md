@@ -3,49 +3,60 @@
 
 ## 接口文档
 ```
+syntax = "proto3";
+
+option java_package = "com.ljygogogo.movie.user";
+option java_multiple_files = true;
+
 message BaseResp {
-    i64 errNo
-    string errMsg
+  int64 errNo = 1;
+  string errMsg = 2;
+}
+
+enum Gender {
+  MALE = 0;
+  FEMALE = 1;
+  UNDEFINED = 999;
 }
 
 message User {
-    string id
-    string name
-    string password
-    string gender
+  string id = 1;
+  string name = 2;
+  string password = 3;
+  Gender gender = 4;
 }
 
 message LoginReq {
-    string username
-    string password
+  string username = 1;
+  string password = 2;
 }
 message LoginResp {
-    BaseResp baseResp
-    string accessToken
-    string refreshToken
+  BaseResp baseResp = 1;
+  string accessToken = 2;
+  string refreshToken = 3;
 }
 
 message RegisterReq {
-    User user
+  User user = 1;
 }
 message RegisterResp {
-    BaseResp baseResp
+  BaseResp baseResp = 1;
 }
 
 message QueryReq {
-    string accessToken
-    string refreshToken
+  string accessToken = 1;
+  string refreshToken = 2;
 }
 message QueryResp {
-    BaseResp baseResp
-    User user
-    string accessToken // only if refreshToken in QueryReq is set
+  BaseResp baseResp = 1;
+  User user = 2;
+  string accessToken = 3; // only if refreshToken in QueryReq is set
 }
 
 service UserService {
-    rpc login(LoginReq) returns (LoginResp) {}
-    rpc register(RegisterReq) returns (RegisterResp) {}
-    rpc query(QueryReq) returns (QueryResp) {}
+  rpc login(LoginReq) returns (LoginResp) {}
+  rpc register(RegisterReq) returns (RegisterResp) {}
+  rpc query(QueryReq) returns (QueryResp) {}
 }
 ```
 
@@ -104,11 +115,7 @@ service UserService {
     _id:"xxx",
     name: "xxx",
     password: "xxx",
-    gender: "xxx"
-}
-refresh_token:
-{
-    refreshToken: "xxx",
-    userId:"xxx"
+    gender: "xxx",
+    lastRefreshToken: "xxx" // 一个用户只产生一个refreshToken，也就是说如果用户多端登录，最后只有一端能够通过refreshToken获取到新的acToken
 }
 ```

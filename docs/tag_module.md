@@ -2,74 +2,76 @@
 ## 接口定义
 
 ```
+syntax = "proto3";
+package tag;
+
+option java_package = "com.ljygogogo.movie.tag";
+option java_multiple_files = true;
+
 message BaseResp {
-    i64 errNo
-    string errMsg
+  int64 errNo = 1;
+  string errMsg = 2;
 }
 message Tag {
-    i64 id
-    string content
-    datetime createdAt
+  int64 id = 1;
+  string content = 2;
+  int64 updatedAt = 3;  // 对于用户来说，这是用户最后一次使用这个tag的时间，对于电影来说，这是电影最后一次被打这个tag的时间
+  int64 nTimes = 4; // 对于用户来说，这是用户使用这个tag的次数，对于电影来说，这是电影被打上这个tag的次数
 }
 
 message CreateTagReq {
-    string movieId
-    string tagContent
+  string userId = 1;
+  string movieId = 2;
+  string tagContent = 3;
 }
 message CreateTagResp {
-    BaseResp baseResp
+  BaseResp baseResp = 1;
 }
 
 message QueryMovieTagReq {
-    string movieId
+  string userId = 1;
+  string movieId = 2;
 }
 message QueryMovieTagResp {
-    BaseResp baseResp
-    repeated Tag tags
+  BaseResp baseResp = 1;
+  repeated Tag tags = 2;
 }
 
 message QueryUserTagCloudReq {
-    i64 nTags   // 查询k大频率的tag
+  string userId = 1;
+  int64 nTags = 2;   // 查询k大频率的tag
 }
 message QueryUserTagCloudResp {
-    BaseResp baseResp
-    repeated Tag tags
+  BaseResp baseResp = 1;
+  repeated Tag tags = 2;
 }
 
 message QueryTagRecordsReq {
-    i64 page
-    i64 offset
+  string userId = 1;
+  int64 page = 2;
+  int64 offset = 3;
 }
 message QueryTagRecordsResp {
-    BaseResp baseResp
-    repeated Tag tags
-    i64 nRecords
-}
-
-message QueryRecentTagsReq {
-    i64 nTags
-}
-message QueryRecentTagsResp {
-    BaseResp baseResp
-    repeated Tag tags   // 这里会确保返回的时候按照时间倒序
+  BaseResp baseResp = 1;
+  repeated Tag tags = 2;
+  int64 nRecords = 3;
 }
 
 message QueryMovieTopNTagsReq {
-    string movieId
-    i64 nTags
+  string movieId = 1;
+  int64 nTags = 2;
 }
 message QueryMovieTopNTagsResp {
-    BaseResp baseResp
-    repeated Tag tags
+  BaseResp baseResp = 1;
+  repeated Tag tags = 2;
 }
 
 service TagService {
-    rpc createTag(CreateTagReq) returns (CreateTagResp) {} (接口幂等)
-    rpc queryMovieTag(QueryMovieTagReq) returns (QueryMovieTagResp) {}
-    rpc queryUserTagCloud(QueryUserTagCloudReq) returns (QueryUserTagCloudResp) {}
-    rpc queryTagRecords(QueryTagRecordsReq) returns (QueryTagRecordsResp) {}
-    rpc queryRecentTags(QueryRecentTagsReq) returns (QueryRecentTagsResp) {}
-    rpc queryMovieTopNTags(QueryMovieTopNTagsReq) returns (QueryMovieTopNTagsResp) {}
+  rpc createTag(CreateTagReq) returns (CreateTagResp) {}
+  rpc queryMovieTag(QueryMovieTagReq) returns (QueryMovieTagResp) {}
+  rpc queryUserTagCloud(QueryUserTagCloudReq) returns (QueryUserTagCloudResp) {}
+  rpc queryTagRecords(QueryTagRecordsReq) returns (QueryTagRecordsResp) {}
+  rpc queryMovieTopNTags(QueryMovieTopNTagsReq) returns (QueryMovieTopNTagsResp) {}
 }
 ```
 
@@ -95,20 +97,22 @@ service TagService {
 tag:
 {
     _id:"xxx",
-    content:"xxx",
-    createdAt:xxx   // 表示这个tag被创建的时间
+    content:"xxx"
 }
 用户打的tag：
 {
+    _id:"xxx",
     userId: "xxx",
     tagId: "xxx",
-    createdAt: xxx, // 用户第一次使用这个tag的时间
+    updatedAt: xxx, // 用户最后一次使用这个Tag的时间
     useTimes: 666,   // 用户打这个tag的次数
 }
 电影tag：
 {
+    _id:"xxx",
     movieId: "xxx",
     tagId: "xxx",
+    updatedAt: xxx, // 这个电影最近一次被打这个tag的时间
     taggedTimes: 666    // 表示这个电影被打这个tag的次数
 }
 ```

@@ -111,6 +111,7 @@ CreateResp中：
     participants: "xxx",
     release_date: xxx,
     language: "xxx",
+    unique_rating_cnt: xxx, // 一共有多少不同的用户给这个电影评分，用来在线更新ave_rating
     ave_rating:x.x  // 电影平均评分，仅在新用户评分时计算
 }
 ```

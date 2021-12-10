@@ -1,53 +1,63 @@
 # 评分模块
 ## 接口设计
 ```
+syntax = "proto3";
+package rating;
+
+option java_package = "com.ljygogogo.movie.rating";
+option java_multiple_files = true;
+
 message BaseResp {
-    i64 errNo
-    string errMsg
+  int64 errNo = 1;
+  string errMsg = 2;
 }
 message Movie {
-    string id
-    string title
-    string picUrl
-    optional string introduction
-    optional string participants
-    optional string releaseDate
-    optional string language
+  string id = 1;
+  string title = 2;
+  string picUrl = 3;
+  optional string introduction = 4;
+  optional string participants = 5;
+  optional string releaseDate = 6;
+  optional string language = 7;
+  optional int64 uniqueRatingCnt = 8;
+  optional float averageRating = 9;
 }
 message RateRecord {
-    Movie movie
-    i64 rating
+  Movie movie = 1;
+  float rating = 2;
 }
 
 message RateReq {
-    string movieId
-    i64 rating
+  string movieId = 1;
+  string userId = 2;
+  float rating = 3;
 }
 message RateResp {
-    BaseResp baseResp
+  BaseResp baseResp = 1;
 }
 message QueryRateRecordsReq {
-    i64 page
-    i64 offset
+  string userId = 1;
+  int64 page = 2;
+  int64 offset = 3;
 }
 message QueryRateRecordsResp {
-    BaseResp baseResp
-    repeated RateRecord records
-    i64 nRecords
+  BaseResp baseResp = 1;
+  repeated RateRecord records = 2;
+  int64 nRecords = 3;
 }
 
 message QueryMovieRatingReq {
-    repeated string movieIdList
+  string userId = 1;
+  repeated string movieIdList = 2;
 }
 message QueryMovieRatingResp {
-    map<string,i64> movieId2PersonalRating
-    map<string,i64> movieId2AverageRating
+  map<string,float> movieId2PersonalRating = 1;
 }
 
 service RatingService {
-    rpc rateMovie(RateReq) returns (RateResp) {}
-    rpc queryRateRecords(QueryRateRecordsReq) returns (QueryRateRecordsResp) {}
-    rpc batchQueryMovieRating(QueryMovieRatingReq) returns (QueryMovieRatingResp) {}
+  rpc rateMovie(RateReq) returns (RateResp) {}
+  rpc queryRateRecords(QueryRateRecordsReq) returns (QueryRateRecordsResp) {}
+  rpc batchQueryMovieRating(QueryMovieRatingReq) returns (QueryMovieRatingResp) {}
 }
 ```
 
