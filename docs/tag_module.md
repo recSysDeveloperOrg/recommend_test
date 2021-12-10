@@ -79,7 +79,7 @@ service TagService {
 1. 用户可以在电影详情页面创建新的(createTag)&修改(createTag)&查看自己的Tag(queryMovieTag)
 2. 用户可以在个人页面查看自己的标签云（也就是根据标签次数排序）(queryUserTagCloud)
 3. 用户可以在个人页面查看历史标签记录（可以考虑和历史评分记录放在一起作为历史记录）(queryTagRecords)
-4. 用户在新建tag时会获取最近创建的K个tag，方便通过点击填入(queryRecentTags)
+4. 用户在新建tag时会获取最近创建的K个tag，方便通过点击填入(queryTagRecords)
 5. 电影详情页面会展示这个电影被打的最多的N个tag(queryMovieTopNTags)
 
 ## 错误码约定（xxxResp.baseResp.errNo）
